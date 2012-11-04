@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
 	}
 
 	while (size = fread(buf, 1, BUFSIZ, framdisk)) {
-		fwrite(buf, 1, size, framdisk);
+		fwrite(buf, 1, size, foutput);
 	}
 
 	return 0;
