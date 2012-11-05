@@ -58,6 +58,7 @@ int main(int argc, char *argv[])
 	if (!forigin || !bzImage || !framdisk)
 		ERROR("ERROR: failed to open origin or output images\n");
 
+	/* Read bzImage length from the image to unpack */
 	if (fseek(forigin, CMDLINE_END, SEEK_SET) == -1)
 		ERROR("ERROR: failed to seek on image\n");
 
@@ -66,6 +67,7 @@ int main(int argc, char *argv[])
 	else
 		bzImageLen = le32toh(bzImageLen);
 
+	/* Read ramdisk length from the image to unpack */
 	if (fseek(forigin, (CMDLINE_END+sizeof(uint32_t)), SEEK_SET) == -1)
 		ERROR("ERROR: failed to seek on image\n");
 
@@ -74,6 +76,7 @@ int main(int argc, char *argv[])
 	else
 		ramdiskLen = le32toh(ramdiskLen);
 
+	/* Copy bzImage */
 	if (fseek(forigin, sizeof(struct bootheader), SEEK_SET) == -1)
 		ERROR("ERROR: failed to seek when copying bzImage\n");
 
@@ -86,6 +89,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	/* Copy ramdisk */
 	if (fseek(forigin, (sizeof(struct bootheader)+bzImageLen), SEEK_SET) == -1)
 		ERROR("ERROR: failed to seek when copying ramdisk\n");
 

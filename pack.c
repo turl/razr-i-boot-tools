@@ -62,6 +62,7 @@ int main(int argc, char *argv[])
 	if (!forigin || !foutput)
 		ERROR("ERROR: failed to open origin or output image\n");
 
+	/* Allocate memory and copy bootstub to it */
 	file = calloc(sizeof(struct bootheader), sizeof(char));
 	if (file == NULL)
 		ERROR("ERROR allocating memory\n");
@@ -69,25 +70,30 @@ int main(int argc, char *argv[])
 	if (fread(file, sizeof(struct bootheader), 1, forigin) != 1)
 		ERROR("ERROR reading bootstub\n");
 
+	/* Figure out the bzImage size and set it */
 	if (stat(bzImage, &st) == 0) {
 		tmp = st.st_size;
 		file->bzImageSize = htole32(tmp);
 	} else
 		ERROR("ERROR reading bzImage size\n");
 
+	/* Figure out the ramdisk size and set it */
 	if (stat(ramdisk, &st) == 0) {
 		tmp = st.st_size;
 		file->initrdSize = htole32(tmp);
 	} else
 		ERROR("ERROR reading ramdisk\n");
 
+	/* Write the patched bootstub to the new image */
 	if (fwrite(file, sizeof(struct bootheader), 1, foutput) != 1)
 		ERROR("ERROR writing image\n");
 
+	/* Then copy the new bzImage */
 	while ((size = fread(buf, 1, BUFSIZ, fbzImage))) {
 		fwrite(buf, 1, size, foutput);
 	}
 
+	/* And finally copy the ramdisk */
 	while ((size = fread(buf, 1, BUFSIZ, framdisk))) {
 		fwrite(buf, 1, size, foutput);
 	}
