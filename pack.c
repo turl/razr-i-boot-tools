@@ -45,6 +45,7 @@ int main(int argc, char *argv[])
 	uint32_t tmp;
 	char buf[BUFSIZ];
 	size_t size;
+	struct bootheader *file;
 
 	if (argc != 5)
 		ERROR("Usage: %s <valid image> <bzImage> <ramdisk> <output>\n", argv[0]);
@@ -61,7 +62,7 @@ int main(int argc, char *argv[])
 	if (!forigin || !foutput)
 		ERROR("ERROR: failed to open origin or output image\n");
 
-	struct bootheader *file = calloc(sizeof(struct bootheader), sizeof(char));
+	file = calloc(sizeof(struct bootheader), sizeof(char));
 	if (file == NULL)
 		ERROR("ERROR allocating memory\n");
 
@@ -83,11 +84,11 @@ int main(int argc, char *argv[])
 	if (fwrite(file, sizeof(struct bootheader), 1, foutput) != 1)
 		ERROR("ERROR writing image\n");
 
-	while (size = fread(buf, 1, BUFSIZ, fbzImage)) {
+	while ((size = fread(buf, 1, BUFSIZ, fbzImage))) {
 		fwrite(buf, 1, size, foutput);
 	}
 
-	while (size = fread(buf, 1, BUFSIZ, framdisk)) {
+	while ((size = fread(buf, 1, BUFSIZ, framdisk))) {
 		fwrite(buf, 1, size, foutput);
 	}
 
