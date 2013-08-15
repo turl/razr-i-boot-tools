@@ -26,12 +26,22 @@
 #ifndef __BOOTHEADER__
 #define __BOOTHEADER__
 
-#define CMDLINE_END   						(0x400)
+#ifdef LENOVO_IMAGE
+#define HEAD_PADDING						(0x3e0) /* Lenovo K900 */
+#else
+#define HEAD_PADDING						(0) /* Motorola RAZR i */
+#endif
+
+#define CMDLINE_SIZE   						(0x400)
 #define PADDING1_SIZE						(0x1000-0x410)
 #define BOOTSTUBSTACK_SIZE					(0x1000)
+#define CMDLINE_END						(HEAD_PADDING+CMDLINE_SIZE)
 
 struct bootheader {
-	char cmdline[CMDLINE_END];
+#if HEAD_PADDING > 0
+	char padding0[HEAD_PADDING];
+#endif
+	char cmdline[CMDLINE_SIZE];
 	uint32_t bzImageSize;
 	uint32_t initrdSize;
 	uint32_t SPIUARTSuppression;
@@ -41,6 +51,6 @@ struct bootheader {
 };
 
 /* Sanity check for struct size */
-typedef char z[(sizeof(struct bootheader) == 0x2000) ? 1 : -1];
+typedef char z[(sizeof(struct bootheader) == 0x2000 + HEAD_PADDING) ? 1 : -1];
 
 #endif
