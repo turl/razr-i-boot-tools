@@ -16,5 +16,8 @@ The utilities adapted from original project:
 - gxi_pack - modify the image by providing user kernel and initrd image (user may specify image type)
 
 New utility:
-- gxi_dump_images - retreive images stored in hidden section of mmcblk0 
+- gxi_dump_images_pc - retreive images stored in hidden section of mmcblk0 
 - gxi_dump_images_s - static-linked version dumping images directly on phone from /dev/block/mmcblk0
+
+Dynamically-linked binaries (pack, unpack, dump_images), which can be used directly on ZTE 
+Grand X In are stored in medfield_bin directory.

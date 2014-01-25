@@ -27,14 +27,14 @@
 #ifndef __BOOTHEADER__
 #define __BOOTHEADER__
 
-#define SECTOR							(512)
+#define SECTOR						(512)
 
-#define HEAD_LEN						(0x38) 
+#define HEAD_LEN					(0x38) 
 #define HEAD_PADDING					(0x1c8) 
 
-#define IMAGE_HDR						("$OS$\0\0\1")
-#define PLATFORM						(0x380101)
-#define ID2_SIZE						(0x28) 
+#define IMAGE_HDR					("$OS$\0\0\1")
+#define PLATFORM					(0x380101)
+#define ID2_SIZE					(0x28) 
 
 #define CMDLINE_SIZE   					(0x400)
 #define PADDING1_SIZE					(0x1000-0x410)
@@ -44,6 +44,10 @@
 #define T_RECOVERY						(0xD)
 #define T_FASTBOOT						(0xF)
 #define T_BOOT							(0x1)
+
+#ifndef le32toh
+#  define le32toh(x) letoh32(x)
+#endif
 
 #define ERROR(...) do { fprintf(stderr, __VA_ARGS__); exit(1); } while(0)
 #define MESSAGE(...) do { fprintf(stderr, __VA_ARGS__); } while(0)
