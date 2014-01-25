@@ -16,9 +16,12 @@ gxi_pack: gxi_pack.o
 gxi_unpack: gxi_unpack.o
 	$(CC) -o $@ $< $(CFLAGS) 
 
-gxi_dump_images: gxi_dump_images.o
-	$(CC) -o $@ $< $(CFLAGS) -DPC
+gxi_dump_images_pc.o: gxi_dump_images.c
+	$(CC) -c -o $@ $< $(CFLAGS) -DPC
 
 gxi_dump_images_s: gxi_dump_images.o
+	$(CC) -o $@ $< $(CFLAGS)
+
+gxi_dump_images: gxi_dump_images_pc.o
 	$(CC) -o $@ $< $(CFLAGS) $(DUMPFLAGS)
 	strip $@

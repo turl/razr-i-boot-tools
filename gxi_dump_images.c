@@ -130,6 +130,7 @@ e_args parse_arg(char *arg1, char *arg2) {
 		curr |= A_ALL;
 		break;
          case 'i': 
+		if (arg2 == NULL) { curr |= A_HELP; break;}
                 if (arg2[0] == '-' && arg2[1] == '\0') {
    			origin = "/dev/stdin";
 			arg2[0]='\0';
@@ -138,6 +139,7 @@ e_args parse_arg(char *arg1, char *arg2) {
 		}
 		return curr;
          case 'o': 
+		if (arg2 == NULL) { curr |= A_HELP; break;}
 		odir = arg2;
 		return curr;
 	 default: 

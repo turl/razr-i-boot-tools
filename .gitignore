@@ -2,3 +2,7 @@
 *~
 pack
 unpack
+gxi_dump_images
+gxi_dump_images_s
+gxi_pack
+gxi_unpack
