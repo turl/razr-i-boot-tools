@@ -2,6 +2,7 @@
  * unpack.c
  *
  * Copyright 2012 Emilio López <turl@tuxfamily.org>
+ * Modified for ZTE GXI by Pavel Moravec, 2014 
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,10 +27,11 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <endian.h>
+#include <string.h>
+
 
 #include "bootheader.h"
 
-#define ERROR(...) do { fprintf(stderr, __VA_ARGS__); return 1; } while(0)
 
 int main(int argc, char *argv[])
 {
@@ -43,6 +45,7 @@ int main(int argc, char *argv[])
 	uint32_t ramdiskLen;
 	uint32_t missing;
 	char buf[BUFSIZ];
+	struct bootheader tmphdr;
 	size_t size;
 
 	if (argc != 4)
@@ -58,6 +61,10 @@ int main(int argc, char *argv[])
 	if (!forigin || !bzImage || !framdisk)
 		ERROR("ERROR: failed to open origin or output images\n");
 
+	if (fread(&tmphdr, HEAD_LEN, 1, forigin) != 1)
+		ERROR("ERROR: failed to read file header\n");
+	checkBootHeader(&tmphdr);
+	
 	/* Read bzImage length from the image to unpack */
 	if (fseek(forigin, CMDLINE_END, SEEK_SET) == -1)
 		ERROR("ERROR: failed to seek on image\n");

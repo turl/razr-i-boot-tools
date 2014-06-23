@@ -1,0 +1,23 @@
+This is a modified version of turl's tools to pack/unpack images from
+https://github.com/turl/razr-i-boot-tools
+
+This version of the tool works with ZTE Grand X In images, which use a 
+slightly modified format than the original utilities.
+
+Since ZTE GXI does not store images in separate paritions, a new tool was
+added to read the MBR info and dump the referenced images from hidden part 
+of /dev/block/mmcblk0 (first 100 MB).
+
+Header checksum and length are recalculated to match modfied image. 
+
+The utilities adapted from original project:
+
+- gxi_unpack - obtain kernel and compressed initrd from image (e.g. stock image from update.zip)
+- gxi_pack - modify the image by providing user kernel and initrd image (user may specify image type)
+
+New utility:
+- gxi_dump_images_pc - retreive images stored in hidden section of mmcblk0 
+- gxi_dump_images_s - static-linked version dumping images directly on phone from /dev/block/mmcblk0
+
+Dynamically-linked binaries (pack, unpack, dump_images), which can be used directly on ZTE 
+Grand X In are stored in medfield_bin directory.

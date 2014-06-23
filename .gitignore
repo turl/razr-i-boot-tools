@@ -1,4 +1,6 @@
 *.o
 *~
-pack
-unpack
+gxi_dump_images_*
+gxi_dump_images
+gxi_pack
+gxi_unpack
