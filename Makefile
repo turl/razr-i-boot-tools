@@ -5,6 +5,10 @@ ifneq ($(LENOVO_IMAGE),)
 	CFLAGS+=-DLENOVO_IMAGE=1
 endif
 
+ifneq ($(DELL_IMAGE),)
+	CFLAGS+=-DDELL_IMAGE=1
+endif
+
 .PHONY: clean
 
 all: pack unpack

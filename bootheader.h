@@ -28,13 +28,17 @@
 
 #ifdef LENOVO_IMAGE
 #define HEAD_PADDING						(0x3e0) /* Lenovo K900 */
+#define BOOTSTUBSTACK_SIZE					(0x1000)
+#elif DELL_IMAGE
+#define HEAD_PADDING						(0x3e0) /* Dell Venue 8 */
+#define BOOTSTUBSTACK_SIZE					(0x2000)
 #else
 #define HEAD_PADDING						(0) /* Motorola RAZR i */
+#define BOOTSTUBSTACK_SIZE					(0x1000)
 #endif
 
 #define CMDLINE_SIZE   						(0x400)
 #define PADDING1_SIZE						(0x1000-0x410)
-#define BOOTSTUBSTACK_SIZE					(0x1000)
 #define CMDLINE_END						(HEAD_PADDING+CMDLINE_SIZE)
 
 struct bootheader {
@@ -51,6 +55,6 @@ struct bootheader {
 };
 
 /* Sanity check for struct size */
-typedef char z[(sizeof(struct bootheader) == 0x2000 + HEAD_PADDING) ? 1 : -1];
+typedef char z[(sizeof(struct bootheader) == 0x1000 + BOOTSTUBSTACK_SIZE + HEAD_PADDING) ? 1 : -1];
 
 #endif
